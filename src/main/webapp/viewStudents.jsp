@@ -52,6 +52,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Department</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,7 +65,11 @@
                         <td><%= s.getName() %></td>
                         <td><%= s.getEmail() %></td>
                         <td><%= s.getDepartment() %></td>
-                    </tr>
+                       <td>
+                       <a href="editStudent?id=<%= s.getId() %>" class="btn btn-sm btn-warning">✏️ Edit</a>
+                       <a href="deleteStudent?id=<%= s.getId() %>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this student?');">🗑️ Delete</a>
+                       </td>
+                    </tr>         
                 <%
                         }
                     } else {

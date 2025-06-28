@@ -53,4 +53,84 @@ public class StudentDAO {
         return studentList;
     }
     
+    public List<Student> searchStudents(String keyword) {
+        List<Student> list = new ArrayList<>();
+        String sql = "SELECT * FROM students WHERE name LIKE ? OR department LIKE ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String searchTerm = "%" + keyword + "%";
+            stmt.setString(1, searchTerm);
+            stmt.setString(2, searchTerm);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Student s = new Student(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("department")
+                );
+                list.add(s);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    
+    public void updateStudent(Student student) {
+        String sql = "UPDATE students SET name = ?, email = ?, department = ? WHERE id = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, student.getName());
+            stmt.setString(2, student.getEmail());
+            stmt.setString(3, student.getDepartment());
+            stmt.setInt(4, student.getId());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void deleteStudentById(int id) {
+        String sql = "DELETE FROM students WHERE id = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public Student getStudentById(int id) {
+        Student s = null;
+        String sql = "SELECT * FROM students WHERE id=?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                s = new Student(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("department")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
 }
