@@ -1,0 +1,23 @@
+# Eclipse and Java build files
+/.classpath
+/.project
+/.settings/
+/target/
+/bin/
+
+# Mac system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Sensitive info
+*.log
+*.bak
+*.tmp
+
+# Libraries (optional if using JARs manually)
+/lib/
+
+# Database passwords if used
+*.properties
